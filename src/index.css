@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #f59e0b;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-night-900: #0f172a;
+  --color-night-950: #020617;
+}
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+body {
+  @apply bg-slate-950 text-slate-200 antialiased min-h-screen;
+  background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #020617 70%);
+  background-attachment: fixed;
+}
+
+.glass-card {
+  @apply bg-slate-900/50 backdrop-blur-md border border-slate-700/50 rounded-2xl shadow-xl;
+}
+
+.text-gradient-gold {
+  @apply bg-gradient-to-r from-amber-200 to-amber-500 bg-clip-text text-transparent;
+}
+
+.text-gradient-emerald {
+  @apply bg-gradient-to-r from-emerald-200 to-emerald-500 bg-clip-text text-transparent;
+}
