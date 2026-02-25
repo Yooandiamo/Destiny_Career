@@ -5,7 +5,9 @@ export default async function handler(req: any, res: any) {
 
   const { baziData, accessCode } = req.body;
 
-  if (accessCode !== "888888" && accessCode !== process.env.ACCESS_CODE) {
+  // Simple paywall check (supports multiple comma-separated codes)
+  const validCodes = (process.env.ACCESS_CODE || "888888").split(',').map(c => c.trim().toUpperCase());
+  if (!validCodes.includes((accessCode || "").trim().toUpperCase())) {
     return res.status(403).json({ error: "无效的解锁码" });
   }
 

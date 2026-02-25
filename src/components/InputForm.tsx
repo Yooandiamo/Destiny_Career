@@ -35,10 +35,9 @@ function ScrollPicker({ options, value, onChange }: { options: {label: string, v
 
   return (
     <div className="relative h-[220px] flex-1 overflow-hidden">
-      <div className="absolute top-1/2 left-0 right-0 h-[44px] -translate-y-1/2 border-y border-slate-700/50 pointer-events-none bg-slate-800/30"></div>
       <div 
         ref={containerRef}
-        className="h-full overflow-y-auto snap-y snap-mandatory hide-scrollbar scroll-smooth"
+        className="h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory hide-scrollbar scroll-smooth touch-pan-y"
         onScroll={handleScroll}
       >
         <div style={{ height: '88px' }}></div>
@@ -66,9 +65,9 @@ function ScrollPicker({ options, value, onChange }: { options: {label: string, v
 function BottomSheet({ isOpen, onClose, title, onConfirm, children }: any) {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex flex-col justify-end">
+    <div className="fixed inset-0 z-50 flex flex-col justify-end overflow-hidden touch-none">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-      <div className="bg-[#0f172a] rounded-t-2xl border-t border-slate-800 w-full relative z-10 animate-in slide-in-from-bottom-full duration-300">
+      <div className="bg-[#0f172a] rounded-t-2xl border-t border-slate-800 w-full relative z-10 animate-in slide-in-from-bottom-full duration-300 touch-auto">
         <div className="flex justify-between items-center p-4 border-b border-slate-800/50">
           <button type="button" onClick={onClose} className="text-slate-400 p-2 hover:text-slate-300 transition-colors">
             <X size={24} strokeWidth={1.5} />
@@ -317,7 +316,8 @@ export default function InputForm({ onSubmit }: InputFormProps) {
         onConfirm={confirmDatePicker}
         title={`选择出生日期 (${isLunar ? '农历' : '公历'})`}
       >
-        <div className="flex gap-2">
+        <div className="relative flex">
+          <div className="absolute top-1/2 left-0 right-0 h-[44px] -translate-y-1/2 border-y border-slate-700/50 pointer-events-none bg-slate-800/30"></div>
           <ScrollPicker options={years} value={tempYear} onChange={setTempYear} />
           <ScrollPicker options={months} value={tempMonth} onChange={setTempMonth} />
           <ScrollPicker options={days} value={tempDay} onChange={setTempDay} />
@@ -331,7 +331,8 @@ export default function InputForm({ onSubmit }: InputFormProps) {
         onConfirm={confirmTimePicker}
         title="选择出生时间"
       >
-        <div className="flex gap-2">
+        <div className="relative flex">
+          <div className="absolute top-1/2 left-0 right-0 h-[44px] -translate-y-1/2 border-y border-slate-700/50 pointer-events-none bg-slate-800/30"></div>
           <ScrollPicker options={hours} value={tempHour} onChange={setTempHour} />
           <ScrollPicker options={minutes} value={tempMinute} onChange={setTempMinute} />
         </div>
