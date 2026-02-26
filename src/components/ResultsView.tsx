@@ -91,7 +91,7 @@ export default function ResultsView({ baziData, initialAccessCode, onBack }: Res
 
         <div className="mt-6 p-4 bg-slate-800/30 rounded-xl border border-slate-700/30">
           <p className="text-sm text-slate-400 italic leading-relaxed">
-            "{baziData.summary}"
+            "{aiResult ? aiResult.summary : baziData.summary}"
           </p>
         </div>
       </div>
@@ -137,16 +137,19 @@ export default function ResultsView({ baziData, initialAccessCode, onBack }: Res
           {/* Favorable/Unfavorable */}
           <div className="flex justify-center gap-4">
             <div className="px-6 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-sm">
-              喜用: {baziData.favorableElements.join(', ')}
+              喜用: {aiResult ? aiResult.favorableElements.join(', ') : baziData.favorableElements.join(', ')}
             </div>
             <div className="px-6 py-2 rounded-full border border-rose-500/30 bg-rose-500/10 text-rose-400 text-sm">
-              忌神: {baziData.unfavorableElements.join(', ')}
+              忌神: {aiResult ? aiResult.unfavorableElements.join(', ') : baziData.unfavorableElements.join(', ')}
             </div>
           </div>
 
           {aiResult && (
             <>
               <div className="text-center space-y-2 mt-12">
+                <div className="inline-block px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-sm font-bold tracking-widest mb-2">
+                  格局：{aiResult.pattern}
+                </div>
                 <div className="flex items-center justify-center gap-2 text-emerald-400 mb-4">
                   <MapPin className="w-5 h-5" />
                   <h3 className="font-medium text-lg">发现你的"天选职业"</h3>

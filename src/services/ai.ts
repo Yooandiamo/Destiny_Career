@@ -1,6 +1,9 @@
 import { BaziData } from "../utils/baziHelper";
 
 export interface CareerRecommendation {
+  favorableElements: string[];
+  unfavorableElements: string[];
+  pattern: string;
   summary: string;
   topCareer: {
     name: string;
