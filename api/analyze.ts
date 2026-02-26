@@ -3,7 +3,16 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { baziData, accessCode } = req.body;
+  let body = req.body;
+  if (typeof body === 'string') {
+    try {
+      body = JSON.parse(body);
+    } catch (e) {
+      body = {};
+    }
+  }
+
+  const { baziData, accessCode } = body || {};
 
   // Simple paywall check (supports multiple comma-separated codes)
   const validCodes = (process.env.ACCESS_CODE || "888888").split(',').map(c => c.trim().toUpperCase());
