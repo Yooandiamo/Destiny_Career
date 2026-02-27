@@ -66,6 +66,15 @@ export default async function handler(req: any, res: any) {
 }
     `;
 
+    // Generate a deterministic seed based on the Bazi string so the same person gets the exact same result
+    const baziString = baziData.bazi.join('');
+    let seed = 0;
+    for (let i = 0; i < baziString.length; i++) {
+      seed = ((seed << 5) - seed) + baziString.charCodeAt(i);
+      seed |= 0;
+    }
+    seed = Math.abs(seed);
+
     const response = await fetch("https://api.deepseek.com/chat/completions", {
       method: "POST",
       headers: {
@@ -79,7 +88,9 @@ export default async function handler(req: any, res: any) {
           { role: "user", content: prompt }
         ],
         response_format: { type: "json_object" },
-        temperature: 0.1
+        temperature: 0.0,
+        top_p: 0.1,
+        seed: seed
       })
     });
 
