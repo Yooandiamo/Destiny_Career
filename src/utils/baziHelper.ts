@@ -3,6 +3,7 @@ import { Solar, Lunar } from 'lunar-javascript';
 export interface BaziData {
   bazi: string[];
   wuxing: string[];
+  tenGods: string[];
   dayMaster: string;
   dayMasterElement: string;
   elementsCount: Record<string, number>;
@@ -19,6 +20,35 @@ const WU_XING_MAP: Record<string, string> = {
 
 const SHENG_MAP: Record<string, string> = { '金': '水', '水': '木', '木': '火', '火': '土', '土': '金' };
 const KE_MAP: Record<string, string> = { '金': '木', '木': '土', '土': '水', '水': '火', '火': '金' };
+
+const CHAR_PROPS: Record<string, {el: string, pol: number}> = {
+  '甲': {el: '木', pol: 1}, '乙': {el: '木', pol: -1},
+  '丙': {el: '火', pol: 1}, '丁': {el: '火', pol: -1},
+  '戊': {el: '土', pol: 1}, '己': {el: '土', pol: -1},
+  '庚': {el: '金', pol: 1}, '辛': {el: '金', pol: -1},
+  '壬': {el: '水', pol: 1}, '癸': {el: '水', pol: -1},
+  '子': {el: '水', pol: -1}, '丑': {el: '土', pol: -1},
+  '寅': {el: '木', pol: 1}, '卯': {el: '木', pol: -1},
+  '辰': {el: '土', pol: 1}, '巳': {el: '火', pol: 1},
+  '午': {el: '火', pol: -1}, '未': {el: '土', pol: -1},
+  '申': {el: '金', pol: 1}, '酉': {el: '金', pol: -1},
+  '戌': {el: '土', pol: 1}, '亥': {el: '水', pol: 1}
+};
+
+function getTenGod(dayMaster: string, char: string): string {
+  if (dayMaster === char) return '日主';
+  const dm = CHAR_PROPS[dayMaster];
+  const c = CHAR_PROPS[char];
+  if (!dm || !c) return '未知';
+
+  const samePol = dm.pol === c.pol;
+  if (dm.el === c.el) return samePol ? '比肩' : '劫财';
+  if (SHENG_MAP[dm.el] === c.el) return samePol ? '食神' : '伤官';
+  if (SHENG_MAP[c.el] === dm.el) return samePol ? '偏印' : '正印';
+  if (KE_MAP[dm.el] === c.el) return samePol ? '偏财' : '正财';
+  if (KE_MAP[c.el] === dm.el) return samePol ? '七杀' : '正官';
+  return '未知';
+}
 
 export function calculateBazi(date: Date, isLunar: boolean = false): BaziData {
   let solar;
@@ -56,6 +86,7 @@ export function calculateBazi(date: Date, isLunar: boolean = false): BaziData {
 
   const dayMaster = bazi[4];
   const dayMasterElement = WU_XING_MAP[dayMaster];
+  const tenGods = bazi.map((char, index) => index === 4 ? '日主' : getTenGod(dayMaster, char));
 
   // Simplified Strong/Weak calculation
   const motherElement = Object.keys(SHENG_MAP).find(key => SHENG_MAP[key] === dayMasterElement)!;
@@ -92,6 +123,7 @@ export function calculateBazi(date: Date, isLunar: boolean = false): BaziData {
   return {
     bazi,
     wuxing,
+    tenGods,
     dayMaster,
     dayMasterElement,
     elementsCount,

@@ -34,9 +34,12 @@ export default async function handler(req: any, res: any) {
 出生地：${baziData.location?.province || ''} ${baziData.location?.city || ''}
 日主：${baziData.dayMaster} (${baziData.dayMasterElement})
 八字排盘：${baziData.bazi.join(' ')}
+十神排盘：${baziData.tenGods?.join(' ') || '未提供'}
+系统初步判定喜用神：${baziData.favorableElements.join('、')}
+系统初步判定忌神：${baziData.unfavorableElements.join('、')}
 
 【任务要求】
-1. 重新精准判定喜用神与忌神：忽略系统初步给出的喜用神，请你根据八字的旺衰、格局（如正格、从格、化气格等）、调候、通关等专业命理原则，重新判定该八字的真正“喜用神”和“忌神”，以及所属“格局”。
+1. 精准判定喜用神与格局：请参考系统初步判定的喜用神，结合“十神排盘”和八字的旺衰、调候、通关等专业命理原则，给出最终的“喜用神”、“忌神”以及所属“格局”（如伤官生财格、建禄格、从弱格等）。
 2. 深度性格剖析：根据日主天干特性、八字中旺相的五行以及透出的“十神”（如七杀显露主威严冲动，食神旺相主温和享受等），深度剖析用户的内在性格、处事风格、核心优势与性格盲区。
 3. 完善职业匹配逻辑（性格+命理双重驱动）：绝不能仅仅依据五行或喜用神。必须将“性格特质”作为核心考量因素，结合“十神”和“格局”来匹配职业。例如：即使喜火，但如果性格极度内向、印星重，就不适合做销售或公关（火），而更适合做后台研发、研究员或设计。
 4. 详细的推荐理由：每个职业的推荐理由必须详细、有深度，明确说明该职业为何契合其【性格特质】以及【命理格局】。每个理由字数【至少50字】。
@@ -88,8 +91,7 @@ export default async function handler(req: any, res: any) {
           { role: "user", content: prompt }
         ],
         response_format: { type: "json_object" },
-        temperature: 0.0,
-        top_p: 0.1,
+        temperature: 0.5,
         seed: seed
       })
     });
