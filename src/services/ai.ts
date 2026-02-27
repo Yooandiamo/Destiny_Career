@@ -4,6 +4,7 @@ export interface CareerRecommendation {
   favorableElements: string[];
   unfavorableElements: string[];
   pattern: string;
+  personality: string;
   summary: string;
   topCareer: {
     name: string;

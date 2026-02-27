@@ -150,7 +150,18 @@ export default function ResultsView({ baziData, initialAccessCode, onBack }: Res
                 <div className="inline-block px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-sm font-bold tracking-widest mb-2">
                   格局：{aiResult.pattern}
                 </div>
-                <div className="flex items-center justify-center gap-2 text-emerald-400 mb-4">
+                
+                {/* Personality Section */}
+                <div className="mt-6 p-5 bg-slate-800/40 rounded-xl border border-slate-700/50 text-left w-full shadow-inner">
+                  <div className="text-amber-500 font-bold mb-3 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5" /> 性格特质与天赋
+                  </div>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    {aiResult.personality}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-center gap-2 text-emerald-400 mb-4 mt-10">
                   <MapPin className="w-5 h-5" />
                   <h3 className="font-medium text-lg">发现你的"天选职业"</h3>
                 </div>
