@@ -19,6 +19,7 @@ interface AssessmentViewProps {
 }
 
 const QUESTIONS = [
+  // Set 1
   {
     id: 'R',
     type: '现实型 (Realistic)',
@@ -54,6 +55,80 @@ const QUESTIONS = [
     type: '常规型 (Conventional)',
     desc: '组织、细节、规则',
     text: '我喜欢有条理地整理数据、管理文件，做事严谨、注重细节和规则。'
+  },
+  // Set 2
+  {
+    id: 'R',
+    type: '现实型 (Realistic)',
+    desc: '机械、技术、制造',
+    text: '我喜欢使用精密仪器或重型机械，看到它们运转正常会很有成就感。'
+  },
+  {
+    id: 'I',
+    type: '研究型 (Investigative)',
+    desc: '数理、思考、求知',
+    text: '我对自然科学（如物理、生物、天文）很感兴趣，喜欢阅读相关书籍或纪录片。'
+  },
+  {
+    id: 'A',
+    type: '艺术型 (Artistic)',
+    desc: '直觉、想象、创新',
+    text: '我对美感有很高的要求，喜欢欣赏艺术作品、摄影或进行室内装饰。'
+  },
+  {
+    id: 'S',
+    type: '社会型 (Social)',
+    desc: '服务、咨询、同理心',
+    text: '在团队中，我通常充当协调者的角色，善于化解矛盾，让大家合作愉快。'
+  },
+  {
+    id: 'E',
+    type: '企业型 (Enterprising)',
+    desc: '竞争、营销、管理',
+    text: '我喜欢推销想法或产品，享受说服别人接受我的观点的过程。'
+  },
+  {
+    id: 'C',
+    type: '常规型 (Conventional)',
+    desc: '财务、数据、执行',
+    text: '我做事喜欢按部就班，遵守既定的流程和规范，不喜欢突如其来的变化。'
+  },
+  // Set 3
+  {
+    id: 'R',
+    type: '现实型 (Realistic)',
+    desc: '动植物、自然、体力',
+    text: '我喜欢户外活动，比如种植花草、饲养动物或进行野外考察。'
+  },
+  {
+    id: 'I',
+    type: '研究型 (Investigative)',
+    desc: '分析、推理、解决问题',
+    text: '遇到不懂的问题，我会刨根问底，直到弄清楚来龙去脉为止。'
+  },
+  {
+    id: 'A',
+    type: '艺术型 (Artistic)',
+    desc: '自由、感性、非传统',
+    text: '我思维跳跃，经常会有一些天马行空的想法，不喜欢受传统观念的束缚。'
+  },
+  {
+    id: 'S',
+    type: '社会型 (Social)',
+    desc: '沟通、合作、关怀',
+    text: '我很擅长察言观色，能敏锐地感知到他人的情绪变化并给予安慰。'
+  },
+  {
+    id: 'E',
+    type: '企业型 (Enterprising)',
+    desc: '决策、风险、收益',
+    text: '我有野心，希望在工作中获得晋升、权力和更高的社会地位。'
+  },
+  {
+    id: 'C',
+    type: '常规型 (Conventional)',
+    desc: '计划、记录、准确',
+    text: '我擅长制定计划和预算，并严格执行，确保每一分钱都花在刀刃上。'
   }
 ];
 
