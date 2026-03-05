@@ -6,6 +6,9 @@ export interface CareerRecommendation {
   unfavorableElements: string[];
   pattern: string;
   personality: string;
+  baziAnalysis: string;
+  testAnalysis: string;
+  synthesisLogic: string;
   summary: string;
   topCareer: {
     name: string;

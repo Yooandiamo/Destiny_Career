@@ -83,7 +83,12 @@ export default function ResultsView({ baziData, assessmentData, initialAccessCod
             
             <div>
               <h3 className="text-xl font-bold text-amber-500 mb-2">正在连通天机</h3>
-              <p className="text-sm text-slate-400">深度分析命局... 寻找本命职业...</p>
+              <p className="text-sm text-slate-400">
+                系统正在进行多维分析...<br/>
+                <span className="text-xs text-slate-500 mt-2 block">
+                  50% 八字命理排盘 · 50% 职业兴趣图谱
+                </span>
+              </p>
             </div>
 
             <div className="space-y-3">
@@ -172,7 +177,7 @@ export default function ResultsView({ baziData, assessmentData, initialAccessCod
                 </div>
 
                 <div className="space-y-3 pt-4 border-t border-slate-800/50">
-                  <h4 className="text-xs text-slate-500 font-medium uppercase tracking-wider">霍兰德天赋倾向</h4>
+                  <h4 className="text-xs text-slate-500 font-medium uppercase tracking-wider">职业兴趣倾向</h4>
                   <div className="flex flex-wrap gap-2">
                     {assessmentData.topTraits.map(trait => (
                       <span key={trait} className="px-3 py-1 bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 rounded-full text-sm">
@@ -205,13 +210,27 @@ export default function ResultsView({ baziData, assessmentData, initialAccessCod
                   </div>
                   
                   {/* Personality Section */}
-                  <div className="mt-6 p-5 bg-slate-800/40 rounded-xl border border-slate-700/50 text-left w-full shadow-inner">
+                  <div className="mt-6 p-5 bg-slate-800/40 rounded-xl border border-slate-700/50 text-left w-full shadow-inner space-y-4">
                     <div className="text-amber-500 font-bold mb-3 flex items-center gap-2">
                       <Sparkles className="w-5 h-5" /> 性格特质与天赋
                     </div>
-                    <p className="text-slate-300 text-sm leading-relaxed">
-                      {aiResult.personality}
-                    </p>
+                    
+                    <div className="space-y-4 text-sm leading-relaxed">
+                      <div>
+                        <span className="text-amber-500/80 font-bold block mb-1">【先天命理】</span>
+                        <p className="text-slate-300">{aiResult.baziAnalysis}</p>
+                      </div>
+                      
+                      <div>
+                        <span className="text-indigo-400/80 font-bold block mb-1">【后天兴趣】</span>
+                        <p className="text-slate-300">{aiResult.testAnalysis}</p>
+                      </div>
+
+                      <div className="pt-3 border-t border-slate-700/30">
+                        <span className="text-emerald-400/80 font-bold block mb-1">【综合推导】</span>
+                        <p className="text-slate-300">{aiResult.synthesisLogic}</p>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-center gap-2 text-emerald-400 mb-4 mt-10">
