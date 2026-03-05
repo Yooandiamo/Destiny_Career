@@ -1,4 +1,5 @@
 import { BaziData } from "../utils/baziHelper";
+import { AssessmentData } from "../components/AssessmentView";
 
 export interface CareerRecommendation {
   favorableElements: string[];
@@ -19,13 +20,13 @@ export interface CareerRecommendation {
   }[];
 }
 
-export async function analyzeCareer(baziData: BaziData, accessCode: string): Promise<CareerRecommendation> {
+export async function analyzeCareer(baziData: BaziData, assessmentData: AssessmentData, accessCode: string): Promise<CareerRecommendation> {
   const response = await fetch('/api/analyze', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ baziData, accessCode }),
+    body: JSON.stringify({ baziData, assessmentData, accessCode }),
   });
 
   if (!response.ok) {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BaziData } from '../utils/baziHelper';
 import { CareerRecommendation, analyzeCareer } from '../services/ai';
+import { AssessmentData } from './AssessmentView';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { Lock, Unlock, Sparkles, MapPin, Briefcase, ArrowLeft, Loader2 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
@@ -12,11 +13,12 @@ export function cn(...inputs: ClassValue[]) {
 
 interface ResultsViewProps {
   baziData: BaziData;
+  assessmentData: AssessmentData;
   initialAccessCode: string;
   onBack: () => void;
 }
 
-export default function ResultsView({ baziData, initialAccessCode, onBack }: ResultsViewProps) {
+export default function ResultsView({ baziData, assessmentData, initialAccessCode, onBack }: ResultsViewProps) {
   const [accessCode, setAccessCode] = useState(initialAccessCode);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +41,7 @@ export default function ResultsView({ baziData, initialAccessCode, onBack }: Res
     setError('');
     
     try {
-      const result = await analyzeCareer(baziData, accessCode);
+      const result = await analyzeCareer(baziData, assessmentData, accessCode);
       setAiResult(result);
       setIsUnlocked(true);
     } catch (err: any) {
@@ -136,11 +138,11 @@ export default function ResultsView({ baziData, initialAccessCode, onBack }: Res
             </div>
           </div>
 
-          {/* Radar Chart */}
+          {/* Radar Chart & Assessment Results */}
           <div className="glass-card p-6">
             <div className="flex items-center gap-2 text-slate-300 mb-6">
               <div className="w-5 h-5 rounded-full border border-slate-500 flex items-center justify-center text-xs">i</div>
-              <h3 className="font-medium">五行能量平衡</h3>
+              <h3 className="font-medium">五行能量与天赋倾向</h3>
             </div>
 
             <div className="flex flex-col md:flex-row items-center gap-8">
@@ -155,16 +157,30 @@ export default function ResultsView({ baziData, initialAccessCode, onBack }: Res
                 </ResponsiveContainer>
               </div>
               
-              <div className="w-full md:w-1/2 space-y-3">
-                {Object.keys(baziData.elementsPercentage).map(el => (
-                  <div key={el} className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${getBgColorForElement(el)}`}></div>
-                      <span className="text-slate-300">{el}</span>
+              <div className="w-full md:w-1/2 space-y-6">
+                <div className="space-y-3">
+                  <h4 className="text-xs text-slate-500 font-medium uppercase tracking-wider">五行分布</h4>
+                  {Object.keys(baziData.elementsPercentage).map(el => (
+                    <div key={el} className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className={`w-2 h-2 rounded-full ${getBgColorForElement(el)}`}></div>
+                        <span className="text-slate-300">{el}</span>
+                      </div>
+                      <span className="text-slate-400">{baziData.elementsPercentage[el]}%</span>
                     </div>
-                    <span className="text-slate-400">{baziData.elementsPercentage[el]}%</span>
+                  ))}
+                </div>
+
+                <div className="space-y-3 pt-4 border-t border-slate-800/50">
+                  <h4 className="text-xs text-slate-500 font-medium uppercase tracking-wider">霍兰德天赋倾向</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {assessmentData.topTraits.map(trait => (
+                      <span key={trait} className="px-3 py-1 bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 rounded-full text-sm">
+                        {trait}
+                      </span>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>

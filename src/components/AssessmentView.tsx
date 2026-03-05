@@ -1,0 +1,201 @@
+import React, { useState } from 'react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
+
+export interface AssessmentData {
+  scores: {
+    R: number; // Realistic
+    I: number; // Investigative
+    A: number; // Artistic
+    S: number; // Social
+    E: number; // Enterprising
+    C: number; // Conventional
+  };
+  topTraits: string[];
+}
+
+interface AssessmentViewProps {
+  onComplete: (data: AssessmentData) => void;
+  onBack: () => void;
+}
+
+const QUESTIONS = [
+  {
+    id: 'R',
+    type: '现实型 (Realistic)',
+    desc: '动手操作、机械、户外',
+    text: '我喜欢动手操作、修理物品、使用工具或在户外工作，而不是整天坐在办公室里。'
+  },
+  {
+    id: 'I',
+    type: '研究型 (Investigative)',
+    desc: '逻辑分析、科学、探索',
+    text: '我喜欢深入研究复杂的问题，探索事物背后的逻辑、科学原理和真相。'
+  },
+  {
+    id: 'A',
+    type: '艺术型 (Artistic)',
+    desc: '创意、表达、审美',
+    text: '我喜欢通过写作、绘画、音乐、设计等方式来表达自己的创意和个性。'
+  },
+  {
+    id: 'S',
+    type: '社会型 (Social)',
+    desc: '助人、教育、人际交往',
+    text: '我喜欢与人打交道，乐于倾听他人的烦恼、帮助他人成长或传授知识。'
+  },
+  {
+    id: 'E',
+    type: '企业型 (Enterprising)',
+    desc: '领导、商业、说服',
+    text: '我喜欢带领团队达成目标，在商业活动中说服他人，追求成就感和影响力。'
+  },
+  {
+    id: 'C',
+    type: '常规型 (Conventional)',
+    desc: '组织、细节、规则',
+    text: '我喜欢有条理地整理数据、管理文件，做事严谨、注重细节和规则。'
+  }
+];
+
+const OPTIONS = [
+  { value: 5, label: '非常符合' },
+  { value: 4, label: '比较符合' },
+  { value: 3, label: '部分符合' },
+  { value: 2, label: '不太符合' },
+  { value: 1, label: '完全不符合' }
+];
+
+export default function AssessmentView({ onComplete, onBack }: AssessmentViewProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, number>>({});
+
+  const handleSelect = (value: number) => {
+    const currentQ = QUESTIONS[currentIndex];
+    const newAnswers = { ...answers, [currentQ.id]: value };
+    setAnswers(newAnswers);
+
+    if (currentIndex < QUESTIONS.length - 1) {
+      setTimeout(() => {
+        setCurrentIndex(currentIndex + 1);
+      }, 300);
+    } else {
+      // Calculate results
+      const scores = {
+        R: newAnswers['R'] || 0,
+        I: newAnswers['I'] || 0,
+        A: newAnswers['A'] || 0,
+        S: newAnswers['S'] || 0,
+        E: newAnswers['E'] || 0,
+        C: newAnswers['C'] || 0,
+      };
+
+      // Find top 2 traits
+      const sortedTraits = Object.entries(scores)
+        .sort(([, a], [, b]) => b - a)
+        .map(([id]) => {
+          const q = QUESTIONS.find(q => q.id === id);
+          return q ? q.type.split(' ')[0] : id;
+        });
+
+      setTimeout(() => {
+        onComplete({
+          scores,
+          topTraits: sortedTraits.slice(0, 2)
+        });
+      }, 400);
+    }
+  };
+
+  const currentQ = QUESTIONS[currentIndex];
+  const progress = ((currentIndex + 1) / QUESTIONS.length) * 100;
+
+  return (
+    <div className="max-w-2xl mx-auto w-full p-4 pb-24 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-2">
+        <button onClick={onBack} className="p-2 bg-slate-800/50 rounded-full text-slate-400 hover:text-amber-400 transition-colors">
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+        <h2 className="text-xl font-bold text-amber-500 tracking-widest">天赋潜能测试</h2>
+        <div className="w-9"></div> {/* Spacer for centering */}
+      </div>
+
+      <div className="glass-card p-6 md:p-8 space-y-8 relative overflow-hidden">
+        {/* Progress Bar */}
+        <div className="space-y-2">
+          <div className="flex justify-between text-xs text-slate-400 font-medium">
+            <span>潜能嗅觉测试</span>
+            <span>{currentIndex + 1} / {QUESTIONS.length}</span>
+          </div>
+          <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+            <div 
+              className="bg-gradient-to-r from-amber-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Question Header */}
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/50 border border-slate-700/50 text-amber-400 text-sm font-medium">
+          <Sparkles className="w-4 h-4" />
+          {currentQ.type}
+        </div>
+
+        {/* Question Text */}
+        <div className="space-y-2">
+          <h3 className="text-xl md:text-2xl font-bold text-slate-100 leading-relaxed">
+            {currentQ.text}
+          </h3>
+          <p className="text-slate-400 text-sm">
+            考察维度：{currentQ.desc}
+          </p>
+        </div>
+
+        {/* Options */}
+        <div className="space-y-3 pt-4">
+          {OPTIONS.map((opt) => {
+            const isSelected = answers[currentQ.id] === opt.value;
+            return (
+              <button
+                key={opt.value}
+                onClick={() => handleSelect(opt.value)}
+                className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all duration-200 ${
+                  isSelected 
+                    ? 'bg-amber-500/10 border-amber-500/50 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.1)]' 
+                    : 'bg-slate-800/40 border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600'
+                }`}
+              >
+                <span className="font-medium">{opt.label}</span>
+                <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
+                  isSelected ? 'border-amber-500 bg-amber-500' : 'border-slate-600'
+                }`}>
+                  {isSelected && <CheckCircle2 className="w-3 h-3 text-slate-900" />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Navigation */}
+        <div className="flex justify-between pt-6 border-t border-slate-800/50">
+          <button
+            onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
+            disabled={currentIndex === 0}
+            className="px-4 py-2 text-sm font-medium text-slate-400 hover:text-slate-200 disabled:opacity-30 transition-colors"
+          >
+            上一题
+          </button>
+          
+          {answers[currentQ.id] && currentIndex < QUESTIONS.length - 1 && (
+            <button
+              onClick={() => setCurrentIndex(currentIndex + 1)}
+              className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-amber-500 hover:text-amber-400 transition-colors"
+            >
+              下一题 <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

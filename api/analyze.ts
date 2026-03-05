@@ -12,7 +12,7 @@ export default async function handler(req: any, res: any) {
     }
   }
 
-  const { baziData, accessCode } = body || {};
+  const { baziData, assessmentData, accessCode } = body || {};
 
   // Simple paywall check (supports multiple comma-separated codes)
   const validCodes = (process.env.ACCESS_CODE || "888888").split(',').map(c => c.trim().toUpperCase());
@@ -38,11 +38,20 @@ export default async function handler(req: any, res: any) {
 系统初步判定喜用神：${baziData.favorableElements.join('、')}
 系统初步判定忌神：${baziData.unfavorableElements.join('、')}
 
+【后天心理与兴趣测试（霍兰德职业兴趣）】
+现实型(R)-动手/机械：${assessmentData?.scores?.R || 0}分
+研究型(I)-分析/逻辑：${assessmentData?.scores?.I || 0}分
+艺术型(A)-创意/表达：${assessmentData?.scores?.A || 0}分
+社会型(S)-助人/社交：${assessmentData?.scores?.S || 0}分
+企业型(E)-领导/商业：${assessmentData?.scores?.E || 0}分
+常规型(C)-组织/细节：${assessmentData?.scores?.C || 0}分
+最高得分维度：${assessmentData?.topTraits?.join('、') || '未提供'}
+
 【任务要求】
 1. 精准判定喜用神与格局：请参考系统初步判定的喜用神，结合“十神排盘”和八字的旺衰、调候、通关等专业命理原则，给出最终的“喜用神”、“忌神”以及所属“格局”（如伤官生财格、建禄格、从弱格等）。
-2. 深度性格剖析：根据日主天干特性、八字中旺相的五行以及透出的“十神”（如七杀显露主威严冲动，食神旺相主温和享受等），深度剖析用户的内在性格、处事风格、核心优势与性格盲区。
-3. 完善职业匹配逻辑（性格+命理双重驱动）：绝不能仅仅依据五行或喜用神。必须将“性格特质”作为核心考量因素，结合“十神”和“格局”来匹配职业。例如：即使喜火，但如果性格极度内向、印星重，就不适合做销售或公关（火），而更适合做后台研发、研究员或设计。
-4. 详细的推荐理由：每个职业的推荐理由必须详细、有深度，明确说明该职业为何契合其【性格特质】以及【命理格局】。每个理由字数【至少50字】。
+2. 深度性格剖析：结合八字“十神”与“霍兰德测试结果”，深度剖析用户的内在性格、处事风格、核心优势与性格盲区。如果八字与测试结果一致，强调其天赋绝对优势；如果存在反差（如八字七杀旺但霍兰德S型高），请分析其内心的矛盾。
+3. 完善职业匹配逻辑（玄学+科学双重驱动）：必须进行【东方八字命理（先天格局）】与【西方霍兰德测试（后天兴趣）】的交叉验证。结合“十神”、“格局”以及“霍兰德最高得分维度”来匹配职业。
+4. 详细的推荐理由：每个职业的推荐理由必须详细、有深度，明确说明该职业为何契合其【性格特质】、【命理格局】以及【霍兰德天赋倾向】。每个理由字数【至少50字】。
 5. 备选职业数量：除了1个“天选职业”外，必须提供【至少4个】备选职业。
 6. 必须返回合法的 JSON 格式数据。
 
